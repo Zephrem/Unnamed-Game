@@ -6,16 +6,22 @@ public class Pierce : Ability
 {
     [SerializeField] private int damage;
 
-    protected override void ExecuteAbility()
+    protected override void ExecuteAbility(List<Tile> targetList)
     {
-        var targetList = targetController.GetTargetList(targetingType, targetRadius);
+        float totalDamage = damage;
 
-        foreach (Tile tile in targetList)
+        for (int i = 0; i < targetList.Count; i++)
         {
-            tile.GetUnit().GetComponent<EnemyStats>().LoseHealth(damage);
+            if (i == 0)
+            {
+                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
+            }
+            else
+            {
+                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage / 2));
+            }
         }
 
-        EndAbility();
         ConsumeStamina();
 
         gridController.GridCleanup();

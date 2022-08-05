@@ -43,7 +43,7 @@ public class Stat
         }
     }
 
-    public int GetValue()
+    public float GetValue()
     {
         if (isDirty)
         {
@@ -88,6 +88,6 @@ public class Stat
             totalValue = finalValue;
         }
 
-        return (Mathf.RoundToInt(totalValue));
+        return (totalValue);
     }
 }

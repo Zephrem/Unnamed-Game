@@ -151,7 +151,9 @@ MonoBehaviour:
     baseValue: 0
   armor:
     baseValue: 0
-  lootTable: {fileID: 11400000, guid: d9b600f1905f10e419e7245e6d57831d, type: 2}
+  itemQuantity:
+    baseValue: 0.16
+  metaTable: {fileID: 11400000, guid: d51a60761374b8c47bf67d187eca6a2d, type: 2}
 --- !u!114 &1795874001246706379
 MonoBehaviour:
   m_ObjectHideFlags: 0

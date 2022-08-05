@@ -4,48 +4,79 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-    public delegate void OnTargetCallback();
-    public OnTargetCallback onTargetCallback;
+    public delegate void OnTargetChosenCallback(List<Tile> list);
+    public OnTargetChosenCallback onTargetChosenCallback;
 
-    public Tile primaryTarget;
+    private Ability.TargetingType targetingType;
+    private int targetingRadius;
+    private int targetingRange;
+
+    private bool isTargeting = false;
 
     private List<Tile> targetList;
 
     private GridController gridManager;
 
-    private Coroutine lastRoutine = null;
-
-
-    // Start is called before the first frame update
     void Start()
     {
         targetList = new List<Tile>();
         gridManager = GetComponent<GridController>();
+    }
 
-        //When a tile registers a click, it will request to be the primary target.
+    public void StartTargeting(Ability.TargetingType type, int radius, int range)
+    {
+        isTargeting = true;
+        targetingType = type;
+        targetingRadius = radius;
+        targetingRange = range;
+
         foreach (Tile t in gridManager.tileArray)
         {
-            t.onClickCallback += SetTarget;
+            t.onClickCallback += ConfirmTarget;
+            t.onHoverStartCallback += PreviewTarget;
+            t.onHoverStopCallback += ClearTargetList;
         }
     }
 
-    //Clear current targets and make a new primary target. Add to target list for multi-targeting.
-    private void SetTarget(Tile newTarget)
+    public void StopTargeting()
     {
-        ClearTargets();
+        isTargeting = false;
+        ClearTargetList();
 
-        primaryTarget = newTarget;
-
-        targetList.Add(primaryTarget);
-
-        if (onTargetCallback != null)
+        foreach (Tile t in gridManager.tileArray)
         {
-            onTargetCallback.Invoke();
+            t.onClickCallback -= ConfirmTarget;
+            t.onHoverStartCallback -= PreviewTarget;
+            t.onHoverStopCallback -= ClearTargetList;
         }
     }
 
-    //Add all valid targets to target list based on targeting style and return the list.
-    public List<Tile> GetTargetList(Ability.TargetingType targetingType, int targetNumber)
+    private void ConfirmTarget(Tile newTarget)
+    {
+        if (onTargetChosenCallback != null && newTarget.row + 1 <= targetingRange)
+        {
+            onTargetChosenCallback.Invoke(targetList);
+        }
+    }
+
+    private void PreviewTarget(Tile tile)
+    {
+        if (isTargeting && tile.row + 1 <= targetingRange)
+        {
+            ClearTargetList();
+
+            targetList.Add(tile);
+
+            GenerateTargetList(targetingType, targetingRadius);
+
+            foreach(Tile t in targetList)
+            {
+                t.Highlight(true);
+            }
+        }
+    }
+
+    public void GenerateTargetList(Ability.TargetingType targetingType, int targetNumber)
     {
         switch (targetingType)
         {
@@ -60,48 +91,17 @@ public class TargetController : MonoBehaviour
             default:
                 break;
         }
-
-        return (targetList);
     }
 
-    public void ClearTargets()
+    public void ClearTargetList()
     {
-        primaryTarget = null;
+        foreach(Tile t in targetList)
+        {
+            t.Highlight(false);
+        }
+
         targetList.Clear();
     }
-
-    #region __TARGETING ROUTINE__
-    //Begin coroutine to wait for target selection.
-    public void StartTargeting()
-    {
-        lastRoutine = StartCoroutine(WaitForTargetCo());
-    }
-
-    //End coroutine and set lastRoutine to null.
-    public void CancelTargeting()
-    {
-        if (lastRoutine != null)
-        {
-            StopCoroutine(lastRoutine);
-            lastRoutine = null;
-        }
-    }
-
-    //Clear existing targets and invoke target callback when a new target is set.
-    private IEnumerator WaitForTargetCo()
-    {
-        ClearTargets();
-
-        yield return new WaitUntil(() => primaryTarget != null);
-
-        if (onTargetCallback != null)
-        {
-            onTargetCallback.Invoke();
-        }
-
-        lastRoutine = null;
-    }
-    #endregion
 
     #region __TARGETING PROTOCOLS__
     private void HorizontalTarget(int targetNumber)
@@ -110,17 +110,11 @@ public class TargetController : MonoBehaviour
         {
             for (int i = 0; i < targetNumber; i++)
             {
-                //Variables to find targets on the sides of the primary target.
                 var over = Mathf.Clamp(targetList[0].column + i, 0, gridManager.GetColumns() - 1);
-                var under = Mathf.Clamp(targetList[0].column - i, 0, gridManager.GetColumns() - 1);
 
                 if (!targetList.Contains(gridManager.tileArray[over, targetList[0].row]))
                 {
                     targetList.Add(gridManager.tileArray[over, targetList[0].row]);
-                }
-                if (!targetList.Contains(gridManager.tileArray[under, targetList[0].row]))
-                {
-                    targetList.Add(gridManager.tileArray[under, targetList[0].row]);
                 }
             }
         }
@@ -133,15 +127,10 @@ public class TargetController : MonoBehaviour
             for (int i = 0; i < targetNumber; i++)
             {
                 var over = Mathf.Clamp(targetList[0].row + i, 0, gridManager.GetRows() - 1);
-                var under = Mathf.Clamp(targetList[0].row - i, 0, gridManager.GetRows() - 1);
 
                 if (!targetList.Contains(gridManager.tileArray[targetList[0].column, over]))
                 {
                     targetList.Add(gridManager.tileArray[targetList[0].column, over]);
-                }
-                if (!targetList.Contains(gridManager.tileArray[targetList[0].column, under]))
-                {
-                    targetList.Add(gridManager.tileArray[targetList[0].column, under]);
                 }
             }
         }

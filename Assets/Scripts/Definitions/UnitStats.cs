@@ -61,7 +61,7 @@ public class UnitStats : MonoBehaviour
 
     public void ResetHealth()
     {
-        currentHealth = maxHealth.GetValue();
+        currentHealth = (int)maxHealth.GetValue();
 
         HealthCallback();
     }
@@ -74,7 +74,7 @@ public class UnitStats : MonoBehaviour
 
     public int GetMaxHealth()
     {
-        return (maxHealth.GetValue());
+        return ((int)maxHealth.GetValue());
     }
 
     public float GetStrength()

@@ -134,7 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c269384206360b42beeeda2bdd7f6f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myText: {fileID: 847145885451322946}
   defaultText: Empty
 --- !u!1 &847145885451322944
 GameObject:

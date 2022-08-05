@@ -2,11 +2,26 @@ using UnityEngine;
 
 public class EnemyStats : UnitStats
 {
-    [SerializeField] private LootTable lootTable;
+    [SerializeField] private Stat itemQuantity;
+    [SerializeField] private MetaTable metaTable;
 
     public void LootDrop()
     {
-        Inventory.Instance.AddItem(lootTable.GetDrop());
+        float finalQuantity = itemQuantity.GetValue();
+        float remainder = finalQuantity % 1;
+
+        if(Random.Range(0f, .9f) < remainder)
+        {
+            finalQuantity += 1;
+        }
+
+        for (int i = 0; i < Mathf.Floor(finalQuantity); i++)
+        {
+            if (metaTable != null)
+            {
+                Inventory.Instance.AddItem(metaTable.RollTable());
+            }
+        }
     }
 
     public void Kill()

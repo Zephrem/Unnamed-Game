@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ab86c8b7e51ed34da824b6c0e216681, type: 3}
-  m_Name: Default Loot Table
+  m_Name: Weapons
   m_EditorClassIdentifier: 
   itemList:
   - item: {fileID: 11400000, guid: 68302a4992ea64545840534bee7c58fb, type: 2}
     weight: 10
   - item: {fileID: 11400000, guid: 49b60d2d9abbb914d80ff0f2306acc8b, type: 2}
-    weight: 20
-  - item: {fileID: 11400000, guid: 76ac70fca0659644e9544da352b840d5, type: 2}
     weight: 20

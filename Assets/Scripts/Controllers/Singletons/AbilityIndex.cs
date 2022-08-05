@@ -21,6 +21,8 @@ public class AbilityIndex : MonoBehaviour
 
     private List<Ability> abilityList;
 
+    [SerializeField] private int maxSelectedSpells;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,5 +92,24 @@ public class AbilityIndex : MonoBehaviour
     public List<Ability> GetAbilityList()
     {
         return (abilityList);
+    }
+
+    public int GetMaxSelectedSpells()
+    {
+        return (maxSelectedSpells);
+    }
+
+    public int GetSelectedSpells()
+    {
+        var total = 0;
+
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            if (abilityList[i].IsSelected() == true)
+            {
+                total++;
+            }
+        }
+        return (total);
     }
 }

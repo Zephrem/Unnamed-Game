@@ -1,11 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
 {
     [SerializeField] protected int abilityId;
     [SerializeField] protected string abilityName;
-    [SerializeField] protected int targetRadius;
+    [SerializeField] protected int targetingRadius;
+    [SerializeField] protected int targetingRange;
     [SerializeField] protected int staminaCost;
 
     protected bool isSelected;
@@ -24,18 +26,6 @@ public abstract class Ability : MonoBehaviour
 
     public TargetingType targetingType;
 
-    private void Update()
-    {
-        //Cancel the coroutine if we click an invalid target or ui element.
-        if (Input.GetMouseButtonDown(0) && targetController != null)
-        {
-            if (targetController.primaryTarget == null)
-            {
-                EndAbility();
-            }
-        }
-    }
-
     public void SetReferences()
     {
         if (FindObjectOfType<GridController>() != null)
@@ -49,17 +39,27 @@ public abstract class Ability : MonoBehaviour
     {
         if (PlayerStats.Instance.GetStamina() >= staminaCost)
         {
-            targetController.ClearTargets();
+            StartCoroutine(EndAbilityCo());
 
-            targetController.onTargetCallback += ExecuteAbility;
+            targetController.StartTargeting(targetingType, targetingRadius, targetingRange);
+
+            targetController.onTargetChosenCallback += ExecuteAbility;
         }
     }
 
-    protected abstract void ExecuteAbility();
+    protected abstract void ExecuteAbility(List<Tile> targetList);
+
+    protected IEnumerator EndAbilityCo()
+    {
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+
+        EndAbility();
+    }
 
     protected void EndAbility()
     {
-        targetController.onTargetCallback -= ExecuteAbility;
+        targetController.StopTargeting();
+        targetController.onTargetChosenCallback -= ExecuteAbility;
     }
 
     protected void ConsumeStamina()
@@ -80,7 +80,14 @@ public abstract class Ability : MonoBehaviour
 
     public void SetSelection(bool state)
     {
-        isSelected = state;
+        if (state == false)
+        {
+            isSelected = false;
+        }
+        else if (AbilityIndex.Instance.GetSelectedSpells() < AbilityIndex.Instance.GetMaxSelectedSpells())
+        {
+            isSelected = true;
+        }
     }
 
     public bool IsSelected()

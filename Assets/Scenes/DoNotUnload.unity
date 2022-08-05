@@ -390,7 +390,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 0
   abilityName: Strike
-  targetRadius: 0
+  targetingRadius: 1
+  targetingRange: 1
   staminaCost: 1
   targetingType: 0
   damage: 3
@@ -440,6 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf9e2c200f84144d9b4b090eec4e9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSelectedSpells: 2
 --- !u!114 &1421650016788131130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +456,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 2
   abilityName: Cleave
-  targetRadius: 2
+  targetingRadius: 2
+  targetingRange: 1
   staminaCost: 2
   targetingType: 1
   damage: 3
@@ -472,7 +475,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 1
   abilityName: Pierce
-  targetRadius: 2
+  targetingRadius: 3
+  targetingRange: 1
   staminaCost: 2
   targetingType: 2
-  damage: 3
+  damage: 5

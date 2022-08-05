@@ -122,7 +122,7 @@ public class PlayerStats : UnitStats
 
     public void ResetStamina()
     {
-        currentStamina = stamina.GetValue();
+        currentStamina = (int)stamina.GetValue();
 
         StaminaCallback();
     }
