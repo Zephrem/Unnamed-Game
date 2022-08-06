@@ -10,7 +10,10 @@ public class Strike : Ability
     {
         foreach (Tile tile in targetList)
         {
-            tile.GetUnit().GetComponent<EnemyStats>().LoseHealth(damage);
+            if(tile.GetUnit() != null)
+            {
+                tile.GetUnit().GetComponent<EnemyStats>().LoseHealth(damage);
+            }
         }
 
         ConsumeStamina();

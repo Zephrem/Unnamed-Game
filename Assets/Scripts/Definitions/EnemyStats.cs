@@ -4,6 +4,7 @@ public class EnemyStats : UnitStats
 {
     [SerializeField] private Stat itemQuantity;
     [SerializeField] private MetaTable metaTable;
+    [SerializeField] private int stageCredit;
 
     public void LootDrop()
     {
@@ -19,7 +20,7 @@ public class EnemyStats : UnitStats
         {
             if (metaTable != null)
             {
-                Inventory.Instance.AddItem(metaTable.RollTable());
+                FindObjectOfType<BattleInventory>().AddItem(metaTable.RollTable());
             }
         }
     }
@@ -27,5 +28,10 @@ public class EnemyStats : UnitStats
     public void Kill()
     {
         GameObject.DestroyImmediate(this.gameObject);
+    }
+
+    public int GetCredit()
+    {
+        return (stageCredit);
     }
 }

@@ -206,6 +206,7 @@ MonoBehaviour:
     baseValue: 0
   armor:
     baseValue: 0
+  dotList: []
   stamina:
     baseValue: 2
 --- !u!4 &556951627
@@ -390,11 +391,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 0
   abilityName: Strike
-  targetingRadius: 1
-  targetingRange: 1
   staminaCost: 1
+  targetingRange: 2
   targetingType: 0
-  damage: 3
+  targetingRadius: 0
+  damage: 5
 --- !u!4 &1421650016788131109
 Transform:
   m_ObjectHideFlags: 0
@@ -422,6 +423,7 @@ GameObject:
   - component: {fileID: 1421650016788131108}
   - component: {fileID: 1421650016788131131}
   - component: {fileID: 1421650016788131130}
+  - component: {fileID: 1421650016788131112}
   m_Layer: 0
   m_Name: Ability Index
   m_TagString: Untagged
@@ -429,6 +431,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1421650016788131112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421650016788131111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d1c532b7b76ff49aa5905c360b9138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityId: 3
+  abilityName: Ignite
+  staminaCost: 1
+  targetingRange: 4
+  targetingType: 0
+  targetingRadius: 0
+  damage: 1
+  duration: 5
 --- !u!114 &1421650016788131128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,11 +478,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 2
   abilityName: Cleave
-  targetingRadius: 2
-  targetingRange: 1
   staminaCost: 2
+  targetingRange: 1
   targetingType: 1
-  damage: 3
+  targetingRadius: 1
+  damage: 5
+  falloff: 0.5
 --- !u!114 &1421650016788131131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,8 +498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityId: 1
   abilityName: Pierce
-  targetingRadius: 3
-  targetingRange: 1
   staminaCost: 2
+  targetingRange: 1
   targetingType: 2
-  damage: 5
+  targetingRadius: 2
+  damage: 3

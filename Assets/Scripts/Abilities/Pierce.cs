@@ -12,13 +12,16 @@ public class Pierce : Ability
 
         for (int i = 0; i < targetList.Count; i++)
         {
-            if (i == 0)
+            if (targetList[i].GetUnit() != null)
             {
-                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
-            }
-            else
-            {
-                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage / 2));
+                if (i == 0)
+                {
+                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
+                }
+                else
+                {
+                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage / 2));
+                }
             }
         }
 

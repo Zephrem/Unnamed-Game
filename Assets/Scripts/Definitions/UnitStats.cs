@@ -7,14 +7,18 @@ public class UnitStats : MonoBehaviour
     public delegate void OnHealthChangeCallback(int hp);
     public OnHealthChangeCallback onHealthChangeCallback;
 
-    public delegate void OnDamagedCallaback(int damage);
-    public OnDamagedCallaback onDamagedCallback;
+    public delegate void OnDamagedCallback(int damage);
+    public OnDamagedCallback onDamagedCallback;
 
     [SerializeField] protected Stat maxHealth;
     [SerializeField] protected Stat barrier; //TODO: overshield that restores an amount each turn
     [SerializeField] protected Stat strength; //TODO: gear req. and increase hp
     [SerializeField] protected Stat intellect; //TODO: gear req. and increase barrier
     [SerializeField] protected Stat armor; //TODO: reduce incoming damage
+
+    [SerializeField] protected List<DamageOverTime> dotList = new List<DamageOverTime>();
+
+    protected bool isBurning = false;
 
     protected int currentHealth;
 
@@ -41,6 +45,44 @@ public class UnitStats : MonoBehaviour
 
         HealthCallback();
         DamagedCallback(damage);
+    }
+
+    public void ApplyDot(int damage, int duration, DamageOverTime.DotType type)
+    {
+        switch (type)
+        {
+            case DamageOverTime.DotType.Burn:
+
+                if (isBurning)
+                {
+                    return;
+                }
+                else
+                {
+                    isBurning = true;
+                    dotList.Add(new DamageOverTime(damage, duration, type));
+                }
+
+                break;
+
+            default:
+
+                break;
+        }
+    }
+
+    public void ActivateDots()
+    {
+        for (int i = dotList.Count - 1; i >= 0; i--)
+        {
+            LoseHealth(dotList[i].damage);
+            dotList[i].currentDuration--;
+
+            if (dotList[i].currentDuration <= 0)
+            {
+                dotList.Remove(dotList[i]);
+            }
+        }
     }
 
     protected void HealthCallback()
@@ -80,6 +122,11 @@ public class UnitStats : MonoBehaviour
     public float GetStrength()
     {
         return (strength.GetValue());
+    }
+
+    public List<DamageOverTime> GetDotList()
+    {
+        return (dotList);
     }
     #endregion
 }

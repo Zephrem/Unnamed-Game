@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cleave : Ability
 {
     [SerializeField] private int damage;
+    [SerializeField] private float falloff;
 
     protected override void ExecuteAbility(List<Tile> targetList)
     {
@@ -12,13 +13,16 @@ public class Cleave : Ability
 
         for (int i = 0; i < targetList.Count; i++)
         {
-            if (i == 0)
+            if (targetList[i].GetUnit() != null)
             {
-                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
-            }
-            else
-            {
-                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage / 2));
+                if (i == 0)
+                {
+                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
+                }
+                else
+                {
+                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage * falloff));
+                }
             }
         }
 

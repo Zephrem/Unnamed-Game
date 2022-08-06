@@ -1,17 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BattleController : MonoBehaviour
 {
     public delegate void OnDamageChangeCallback(int damage);
     public OnDamageChangeCallback onDamageChangeCallback;
+    private void DamageChangeCallback()
+    {
+        if (onDamageChangeCallback != null)
+        {
+            onDamageChangeCallback.Invoke(currentDamage);
+        }
+    }
+
+    public delegate void OnProgressChangeCallback(int progress);
+    public OnProgressChangeCallback onProgressChangeCallback;
 
     private GridController gridController;
 
     [SerializeField] private float strengthModifier;
+    [SerializeField] private int maxStageProgress;
 
-    private int currentStamina;
+    private int currentStageProgress;
+
+    [SerializeField] private GameObject endSplash;
+
     private int currentDamage;
 
     private void Start()
@@ -22,19 +38,29 @@ public class BattleController : MonoBehaviour
 
         gridController.onGridChangeCallback += CalculateDamage;
 
-        PlayerStats.Instance.onStaminaChangeCallback += SetStamina;
+        PlayerStats.Instance.onStaminaChangeCallback += CheckStamina;
 
         PlayerStats.Instance.ResetHealth();
         PlayerStats.Instance.ResetStamina();
 
-        SetStamina(PlayerStats.Instance.GetStamina());
+        CheckStamina(PlayerStats.Instance.GetStamina());
+
+        currentStageProgress = 0;
     }
 
-    private void SetStamina(int stamina)
+    public void AddProgress(int amount)
     {
-        currentStamina = stamina;
+        currentStageProgress += amount;
 
-        if(currentStamina <= 0)
+        if(onProgressChangeCallback != null)
+        {
+            onProgressChangeCallback.Invoke(currentStageProgress);
+        }
+    }
+
+    private void CheckStamina(int stamina)
+    {
+        if(stamina <= 0)
         {
             StartCoroutine(EnemyTurn());
         }
@@ -46,9 +72,22 @@ public class BattleController : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
-        if(PlayerStats.Instance.GetHealth() <= 0)
+        for (int i = 0; i < gridController.GetColumns(); i++)
         {
-            Debug.Log("Game Over");
+            for (int j = 0; j < gridController.GetRows(); j++)
+            {
+                if (gridController.unitArray[i, j] != null)
+                {
+                    gridController.unitArray[i, j].GetComponent<EnemyStats>().ActivateDots();
+                }
+            }
+        }
+
+        gridController.GridCleanup();
+
+        if (PlayerStats.Instance.GetHealth() <= 0)
+        {
+            Defeat();
         }
         else
         {
@@ -62,7 +101,10 @@ public class BattleController : MonoBehaviour
 
         foreach(UnitController unit in gridController.unitArray)
         {
-            totalStrength += unit.GetComponent<EnemyStats>().GetStrength();
+            if(unit != null)
+            {
+                totalStrength += unit.GetComponent<EnemyStats>().GetStrength();
+            }
         }
 
         currentDamage = Mathf.RoundToInt(strengthModifier * totalStrength);
@@ -70,16 +112,30 @@ public class BattleController : MonoBehaviour
         DamageChangeCallback();
     }
 
-    private void DamageChangeCallback()
+    public void Victory()
     {
-        if (onDamageChangeCallback != null)
-        {
-            onDamageChangeCallback.Invoke(currentDamage);
-        }
+        endSplash.SetActive(true);
+        endSplash.GetComponentInChildren<TextMeshProUGUI>().text = "Victory!";
+    }
+
+    public void Defeat()
+    {
+        endSplash.SetActive(true);
+        endSplash.GetComponentInChildren<TextMeshProUGUI>().text = "Defeat";
+    }
+
+    public int GetStageProgress()
+    {
+        return (currentStageProgress);
+    }
+
+    public int GetMaxStageProgress()
+    {
+        return (maxStageProgress);
     }
 
     private void OnDestroy()
     {
-        PlayerStats.Instance.onStaminaChangeCallback -= SetStamina;
+        PlayerStats.Instance.onStaminaChangeCallback -= CheckStamina;
     }
 }

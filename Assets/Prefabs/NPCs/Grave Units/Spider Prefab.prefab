@@ -152,8 +152,9 @@ MonoBehaviour:
   armor:
     baseValue: 0
   itemQuantity:
-    baseValue: 0.16
+    baseValue: 1
   metaTable: {fileID: 11400000, guid: d51a60761374b8c47bf67d187eca6a2d, type: 2}
+  stageCredit: 1
 --- !u!114 &-7037906302071908770
 MonoBehaviour:
   m_ObjectHideFlags: 0

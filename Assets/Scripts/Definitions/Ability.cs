@@ -4,17 +4,6 @@ using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
 {
-    [SerializeField] protected int abilityId;
-    [SerializeField] protected string abilityName;
-    [SerializeField] protected int targetingRadius;
-    [SerializeField] protected int targetingRange;
-    [SerializeField] protected int staminaCost;
-
-    protected bool isSelected;
-
-    protected GridController gridController;
-    protected TargetController targetController;
-
     public enum TargetingType
     {
         single,
@@ -24,14 +13,30 @@ public abstract class Ability : MonoBehaviour
         square
     }
 
-    public TargetingType targetingType;
+    [SerializeField] protected int abilityId;
+    [SerializeField] protected string abilityName;
+    [SerializeField] protected int staminaCost;
+    [SerializeField] protected int targetingRange;
+    [SerializeField] private TargetingType targetingType;
+    [SerializeField] protected int targetingRadius;
+
+    protected bool isSelected;
+
+    protected BattleController battleController;
+    protected GridController gridController;
+    protected TargetController targetController;
+
+
+
+
 
     public void SetReferences()
     {
-        if (FindObjectOfType<GridController>() != null)
+        if (FindObjectOfType<BattleController>() != null)
         {
-            gridController = FindObjectOfType<GridController>();
-            targetController = gridController.GetComponent<TargetController>();
+            battleController = FindObjectOfType<BattleController>();
+            gridController = battleController.GetComponent<GridController>();
+            targetController = battleController.GetComponent<TargetController>();
         }
     }
 
@@ -41,7 +46,7 @@ public abstract class Ability : MonoBehaviour
         {
             StartCoroutine(EndAbilityCo());
 
-            targetController.StartTargeting(targetingType, targetingRadius, targetingRange);
+            targetController.StartTargeting(targetingType, targetingRadius + 1, targetingRange);
 
             targetController.onTargetChosenCallback += ExecuteAbility;
         }

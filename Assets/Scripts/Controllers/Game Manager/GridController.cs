@@ -6,6 +6,8 @@ public class GridController : MonoBehaviour
     public delegate void OnGridChangeCallback();
     public OnGridChangeCallback onGridChangeCallback;
 
+    [SerializeField] private BattleController battleController;
+
     [SerializeField] private int columns, rows;
 
     [SerializeField] private Tile tilePrefab;
@@ -78,17 +80,24 @@ public class GridController : MonoBehaviour
     {
         bool wasKilled = false;
 
-        foreach(UnitController unit in unitArray)
+        for (int i = 0; i < columns; i++)
         {
-            EnemyStats unitStats = unit.GetComponent<EnemyStats>();
-
-            if (unitStats.GetHealth() <= 0)
+            for (int j = 0; j < rows; j++)
             {
-                unitStats.LootDrop();
+                if (unitArray[i, j] != null)
+                {
+                    EnemyStats unitStats = unitArray[i, j].GetComponent<EnemyStats>();
 
-                unitStats.Kill();
+                    if (unitStats.GetHealth() <= 0)
+                    {
+                        unitStats.LootDrop();
+                        battleController.AddProgress(unitStats.GetCredit());
 
-                wasKilled = true;
+                        unitStats.Kill();
+
+                        wasKilled = true;
+                    }
+                }
             }
         }
 
@@ -128,7 +137,30 @@ public class GridController : MonoBehaviour
 
         yield return new WaitForSeconds(.1f);
 
-        RefillColumns();
+        if(battleController.GetStageProgress() < battleController.GetMaxStageProgress())
+        {
+            RefillColumns();
+        }
+        else
+        {
+            var totalEnemies = 0;
+
+            for (int i = 0; i < columns; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    if (unitArray[i, j] != null)
+                    {
+                        totalEnemies++;
+                    }
+                }
+            }
+
+            if(totalEnemies <= 0)
+            {
+                battleController.Victory();
+            }
+        }
 
         GridChangeCallback();
     }

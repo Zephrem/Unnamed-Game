@@ -59,6 +59,11 @@ public class Tile : MonoBehaviour
     #region __ACCESSORS__
     public UnitController GetUnit()
     {
+        if(myUnit != null && myUnit.GetTile() != this)
+        {
+            myUnit = null;
+        }
+
         return (myUnit);
     }
 

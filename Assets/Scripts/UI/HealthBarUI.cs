@@ -20,7 +20,7 @@ public class HealthBarUI : MonoBehaviour
         slider.value = slider.maxValue;
     }
 
-    public void RefreshUI(int hp)
+    private void RefreshUI(int hp)
     {
         slider.value = hp;
     }
