@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerHealthUI : MonoBehaviour
 {
-    private TextMeshProUGUI textGo;
+    private Slider hpSlider;
 
     private void Start()
     {
-        textGo = GetComponent<TextMeshProUGUI>();
+        hpSlider = GetComponent<Slider>();
+
+        hpSlider.maxValue = PlayerStats.Instance.GetMaxHealth();
 
         RefreshUI(PlayerStats.Instance.GetHealth());
 
@@ -18,7 +21,7 @@ public class PlayerHealthUI : MonoBehaviour
 
     public void RefreshUI(int hp)
     {
-        textGo.text = hp.ToString();
+        hpSlider.value = hp;
     }
 
     private void OnDestroy()

@@ -23,7 +23,6 @@ public class AbilityIndex : MonoBehaviour
 
     [SerializeField] private int maxSelectedSpells;
 
-    // Start is called before the first frame update
     void Start()
     {
         abilityList = new List<Ability>();
@@ -37,28 +36,6 @@ public class AbilityIndex : MonoBehaviour
         {
             abilityList.Add(ability);
         }
-
-        abilityList.Sort(SortById);
-    }
-
-    private int SortById(Ability ability1, Ability ability2)
-    {
-        int retval;
-
-        if(ability1.GetId() > ability2.GetId())
-        {
-            retval = 1;
-        }
-        else if(ability1.GetId() < ability2.GetId())
-        {
-            retval = -1;
-        }
-        else
-        {
-            retval = 0;
-        }
-
-        return (retval);
     }
 
     public void SetReferences()
@@ -69,26 +46,17 @@ public class AbilityIndex : MonoBehaviour
         }
     }
 
-    public void ExecuteAbility(int spellId)
+    public void ExecuteAbility(string name)
     {
-        if (spellId < abilityList.Count && abilityList[spellId] != null)
+        Ability abilityToUse = abilityList.Find(x => x.GetName() == name);
+
+        if(abilityToUse != null)
         {
-            abilityList[spellId].StartAbility();
+            abilityToUse.StartAbility();
         }
     }
 
-    public string GetAbilityName(int spellId)
-    {
-        if (spellId < abilityList.Count && abilityList[spellId] != null)
-        {
-            return (abilityList[spellId].GetName());
-        }
-        else
-        {
-            return ("Null");
-        }
-    }
-
+    #region __ACCESSORS__
     public List<Ability> GetAbilityList()
     {
         return (abilityList);
@@ -112,4 +80,5 @@ public class AbilityIndex : MonoBehaviour
         }
         return (total);
     }
+    #endregion
 }

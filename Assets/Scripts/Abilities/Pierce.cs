@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class Pierce : Ability
 {
-    [SerializeField] private int damage;
+    [SerializeField] private float falloff;
 
     protected override void ExecuteAbility(List<Tile> targetList)
     {
-        float totalDamage = damage;
+        int totalDamage = GetTotalDamage();
 
         for (int i = 0; i < targetList.Count; i++)
         {
             if (targetList[i].GetUnit() != null)
             {
-                if (i == 0)
-                {
-                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth((int)totalDamage);
-                }
-                else
-                {
-                    targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.CeilToInt(totalDamage / 2));
-                }
+                targetList[i].GetUnit().GetComponent<EnemyStats>().LoseHealth(Mathf.RoundToInt(totalDamage * (falloff / (i + 1))));
             }
         }
 

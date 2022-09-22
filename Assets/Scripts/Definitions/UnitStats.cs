@@ -12,8 +12,8 @@ public class UnitStats : MonoBehaviour
 
     [SerializeField] protected Stat maxHealth;
     [SerializeField] protected Stat barrier; //TODO: overshield that restores an amount each turn
-    [SerializeField] protected Stat strength; //TODO: gear req. and increase hp
-    [SerializeField] protected Stat intellect; //TODO: gear req. and increase barrier
+    [SerializeField] protected Stat strength;
+    [SerializeField] protected Stat intellect;
     [SerializeField] protected Stat armor; //TODO: reduce incoming damage
 
     [SerializeField] protected List<DamageOverTime> dotList = new List<DamageOverTime>();
@@ -36,6 +36,8 @@ public class UnitStats : MonoBehaviour
 
     public void LoseHealth(int damage)
     {
+        damage = Mathf.Clamp(damage, 1, int.MaxValue);
+
         currentHealth -= damage;
 
         if (currentHealth <= 0)
@@ -122,6 +124,11 @@ public class UnitStats : MonoBehaviour
     public float GetStrength()
     {
         return (strength.GetValue());
+    }
+
+    public float GetIntellect()
+    {
+        return (intellect.GetValue());
     }
 
     public List<DamageOverTime> GetDotList()

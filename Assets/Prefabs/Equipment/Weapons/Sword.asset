@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db60442dd2e9a6a4aaf4c2aebdb7b52f, type: 3}
-  m_Name: Cum Chalice
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  itemName: Cum Chalice
+  itemName: Sword
   sprite: {fileID: 292980805430238366, guid: 79eeeada646ac544d8a100fc948f33c0, type: 3}
   equipmentType: 0
   statMods:

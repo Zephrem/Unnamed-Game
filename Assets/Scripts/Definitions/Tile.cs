@@ -17,7 +17,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color baseColor;
     [SerializeField] private Color highlightColor;
 
-    private UnitController myUnit;
+    private EnemyController myUnit;
 
     public void OnMouseEnter()
     {
@@ -57,7 +57,7 @@ public class Tile : MonoBehaviour
 
 
     #region __ACCESSORS__
-    public UnitController GetUnit()
+    public EnemyController GetUnit()
     {
         if(myUnit != null && myUnit.GetTile() != this)
         {
@@ -67,7 +67,7 @@ public class Tile : MonoBehaviour
         return (myUnit);
     }
 
-    public void SetUnit(UnitController newUnit)
+    public void SetUnit(EnemyController newUnit)
     {
         myUnit = newUnit;
     }

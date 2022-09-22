@@ -15,7 +15,7 @@ public class AbilityButton : MonoBehaviour
 
     private void UseAbility()
     {
-        AbilityIndex.Instance.ExecuteAbility(myAbility.GetId());
+        AbilityIndex.Instance.ExecuteAbility(myAbility.GetName());
     }
 
     public void SetUI(Ability ability)

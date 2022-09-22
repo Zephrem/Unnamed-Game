@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Strike : Ability
 {
-    [SerializeField] private int damage;
-
     protected override void ExecuteAbility(List<Tile> targetList)
     {
+        int totalDamage = GetTotalDamage();
+
         foreach (Tile tile in targetList)
         {
             if(tile.GetUnit() != null)
             {
-                tile.GetUnit().GetComponent<EnemyStats>().LoseHealth(damage);
+                tile.GetUnit().GetComponent<EnemyStats>().LoseHealth(totalDamage);
             }
         }
 

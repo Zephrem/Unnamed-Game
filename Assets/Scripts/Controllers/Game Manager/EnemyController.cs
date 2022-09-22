@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     private int column;
     private int row;
@@ -23,7 +23,7 @@ public class UnitController : MonoBehaviour
     private void Update()
     {
         //Check if this unit is positioned where it should be.
-        if (Mathf.Abs(row - transform.position.y) > .01)
+        if (Mathf.Abs(row - transform.localPosition.y) > .01)
         {
             //Move unit toward the tile position it should be at.
             transform.position = Vector2.Lerp(transform.position, gridManager.tileArray[column, row].transform.position, speed * Time.deltaTime);

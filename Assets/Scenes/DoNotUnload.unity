@@ -201,9 +201,9 @@ MonoBehaviour:
   barrier:
     baseValue: 0
   strength:
-    baseValue: 0
+    baseValue: 8
   intellect:
-    baseValue: 0
+    baseValue: 3
   armor:
     baseValue: 0
   dotList: []
@@ -389,13 +389,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841c607f3705eae439e36c50af670c92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityId: 0
+  spellEffect: {fileID: 0}
   abilityName: Strike
   staminaCost: 1
   targetingRange: 2
   targetingType: 0
-  targetingRadius: 0
-  damage: 5
+  additionalTargets: 0
+  scalingStat: 0
+  damageMultiplier: 2
 --- !u!4 &1421650016788131109
 Transform:
   m_ObjectHideFlags: 0
@@ -443,13 +444,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d1c532b7b76ff49aa5905c360b9138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityId: 3
+  spellEffect: {fileID: 0}
   abilityName: Ignite
   staminaCost: 1
   targetingRange: 4
   targetingType: 0
-  targetingRadius: 0
-  damage: 1
+  additionalTargets: 0
+  scalingStat: 1
+  damageMultiplier: 0.2
   duration: 5
 --- !u!114 &1421650016788131128
 MonoBehaviour:
@@ -476,13 +478,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2be5f466177f854f8dc4f35d638ea49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityId: 2
+  spellEffect: {fileID: 5646501754807717828, guid: 6d139c88b4e4689419ab639ddcb4c71e, type: 3}
   abilityName: Cleave
   staminaCost: 2
   targetingRange: 1
   targetingType: 1
-  targetingRadius: 1
-  damage: 5
+  additionalTargets: 2
+  scalingStat: 0
+  damageMultiplier: 1.5
   falloff: 0.5
 --- !u!114 &1421650016788131131
 MonoBehaviour:
@@ -496,10 +499,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8368e798f334d514588c8046c9940e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityId: 1
+  spellEffect: {fileID: 0}
   abilityName: Pierce
   staminaCost: 2
   targetingRange: 1
   targetingType: 2
-  targetingRadius: 2
-  damage: 3
+  additionalTargets: 2
+  scalingStat: 0
+  damageMultiplier: 1
+  falloff: 0.5

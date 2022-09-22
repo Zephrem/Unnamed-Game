@@ -5,6 +5,8 @@ public class EnemyStats : UnitStats
     [SerializeField] private Stat itemQuantity;
     [SerializeField] private MetaTable metaTable;
     [SerializeField] private int stageCredit;
+    [SerializeField] private string unitName;
+    [SerializeField] private Transform unitPromo;
 
     public void LootDrop()
     {
@@ -33,5 +35,15 @@ public class EnemyStats : UnitStats
     public int GetCredit()
     {
         return (stageCredit);
+    }
+
+    public string GetUnitName()
+    {
+        return (unitName);
+    }
+
+    public Transform GetPromo()
+    {
+        return (unitPromo);
     }
 }

@@ -99,7 +99,7 @@ public class BattleController : MonoBehaviour
     {
         float totalStrength = 0;
 
-        foreach(UnitController unit in gridController.unitArray)
+        foreach(EnemyController unit in gridController.unitArray)
         {
             if(unit != null)
             {
